@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>frames</key>
+    <dict>
+      <key>Cat With Juice Outline.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{0,0},{295,240}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{295,240}}</string>
+        <key>sourceSize</key>
+        <string>{299,244}</string>
+      </dict>
+      <key>Cat With IceCream Outline.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{295,0},{239,281}}</string>
+        <key>offset</key>
+        <string>{0,-0.5}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,3},{239,281}}</string>
+        <key>sourceSize</key>
+        <string>{243,286}</string>
+      </dict>
+      <key>Cat With HandsUp Outline.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{534,0},{242,289}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{242,289}}</string>
+        <key>sourceSize</key>
+        <string>{246,293}</string>
+      </dict>
+      <key>Cat With Tube Outline.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{0,240},{287,558}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{287,558}}</string>
+        <key>sourceSize</key>
+        <string>{291,562}</string>
+      </dict>
+      <key>Cat With Chocolate Outline.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{287,289},{312,537}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{312,537}}</string>
+        <key>sourceSize</key>
+        <string>{316,541}</string>
+      </dict>
+    </dict>
+    <key>metadata</key>
+    <dict>
+      <key>format</key>
+      <integer>2</integer>
+      <key>pixelFormat</key>
+      <string>RGBA8888</string>
+      <key>premultiplyAlpha</key>
+      <false/>
+      <key>realTextureFileName</key>
+      <string>CatsH.png</string>
+      <key>size</key>
+      <string>{776,826}</string>
+      <key>textureFileName</key>
+      <string>CatsH</string>
+    </dict>
+  </dict>
+</plist>

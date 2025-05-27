@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>frames</key>
+    <dict>
+      <key>Cat With Chocolate.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{0,0},{330,560}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{330,560}}</string>
+        <key>sourceSize</key>
+        <string>{334,564}</string>
+      </dict>
+      <key>Cat With Tube.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{0,560},{320,540}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <true/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{320,540}}</string>
+        <key>sourceSize</key>
+        <string>{324,544}</string>
+      </dict>
+      <key>Cat With Juice.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{330,0},{304,256}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{304,256}}</string>
+        <key>sourceSize</key>
+        <string>{308,260}</string>
+      </dict>
+      <key>Cat With HandsUp.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{330,256},{258,303}}</string>
+        <key>offset</key>
+        <string>{0,-0.5}</string>
+        <key>rotated</key>
+        <true/>
+        <key>sourceColorRect</key>
+        <string>{{2,3},{258,303}}</string>
+        <key>sourceSize</key>
+        <string>{262,308}</string>
+      </dict>
+      <key>Cat With IceCream.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{540,514},{242,296}}</string>
+        <key>offset</key>
+        <string>{0,0}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{2,2},{242,296}}</string>
+        <key>sourceSize</key>
+        <string>{246,300}</string>
+      </dict>
+    </dict>
+    <key>metadata</key>
+    <dict>
+      <key>format</key>
+      <integer>2</integer>
+      <key>pixelFormat</key>
+      <string>RGBA8888</string>
+      <key>premultiplyAlpha</key>
+      <false/>
+      <key>realTextureFileName</key>
+      <string>CatsC.png</string>
+      <key>size</key>
+      <string>{782,880}</string>
+      <key>textureFileName</key>
+      <string>CatsC</string>
+    </dict>
+  </dict>
+</plist>

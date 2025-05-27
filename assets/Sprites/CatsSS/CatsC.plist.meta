@@ -1,0 +1,247 @@
+{
+  "ver": "1.0.8",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "17716": {
+      "importer": "sprite-frame",
+      "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e@17716",
+      "displayName": "",
+      "id": "17716",
+      "name": "Cat With Juice",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 330,
+        "trimY": 0,
+        "width": 304,
+        "height": 256,
+        "rawWidth": 308,
+        "rawHeight": 260,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5c7d61fa-0e66-47bc-be4a-ab10df0f7b10@6c48a",
+        "atlasUuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "7634f": {
+      "importer": "sprite-frame",
+      "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e@7634f",
+      "displayName": "",
+      "id": "7634f",
+      "name": "Cat With Chocolate",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 0,
+        "trimY": 0,
+        "width": 330,
+        "height": 560,
+        "rawWidth": 334,
+        "rawHeight": 564,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5c7d61fa-0e66-47bc-be4a-ab10df0f7b10@6c48a",
+        "atlasUuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "defe7": {
+      "importer": "sprite-frame",
+      "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e@defe7",
+      "displayName": "",
+      "id": "defe7",
+      "name": "Cat With Tube",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 0,
+        "trimY": 560,
+        "width": 320,
+        "height": 540,
+        "rawWidth": 324,
+        "rawHeight": 544,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5c7d61fa-0e66-47bc-be4a-ab10df0f7b10@6c48a",
+        "atlasUuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "30a54": {
+      "importer": "sprite-frame",
+      "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e@30a54",
+      "displayName": "",
+      "id": "30a54",
+      "name": "Cat With HandsUp",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": -0.5,
+        "trimX": 330,
+        "trimY": 256,
+        "width": 258,
+        "height": 303,
+        "rawWidth": 262,
+        "rawHeight": 308,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5c7d61fa-0e66-47bc-be4a-ab10df0f7b10@6c48a",
+        "atlasUuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "20b8a": {
+      "importer": "sprite-frame",
+      "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e@20b8a",
+      "displayName": "",
+      "id": "20b8a",
+      "name": "Cat With IceCream",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 540,
+        "trimY": 514,
+        "width": 242,
+        "height": 296,
+        "rawWidth": 246,
+        "rawHeight": 300,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5c7d61fa-0e66-47bc-be4a-ab10df0f7b10@6c48a",
+        "atlasUuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "CatsC.png",
+    "format": 2,
+    "uuid": "52e8a8f1-4b41-47ea-bcc1-4f490c6ffe3e",
+    "textureUuid": "5c7d61fa-0e66-47bc-be4a-ab10df0f7b10@6c48a"
+  }
+}
