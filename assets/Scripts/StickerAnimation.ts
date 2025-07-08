@@ -8,8 +8,8 @@ export class StickerAnimation extends Component {
 
     @property
     frameDuration: number = 0.1; // Seconds per frame
-
-    private sprite!: Sprite;
+    
+   private sprite!: Sprite;
     private currentIndex: number = 0;
     private playing: boolean = false;
 

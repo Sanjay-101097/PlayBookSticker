@@ -1,4 +1,4 @@
-import { _decorator, AudioClip, AudioSource, Component, EventTouch, Input, math, Node, ParticleSystem2D, Sprite, SpriteAtlas, tween, UITransform, Vec3 } from 'cc';
+import { _decorator, AudioClip, AudioSource, Component, EventTouch, Input, math, Node, ParticleSystem2D, Sprite, SpriteAtlas, SpriteFrame, tween, UITransform, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -8,11 +8,20 @@ export class GameManager extends Component {
     @property([Node])
     totalNodes: Node[] = [];
 
+    @property([SpriteFrame])
+    HandSP: SpriteFrame[] = [];
+
     @property(Node)
     dragArea: Node = null;
 
     @property(Node)
+    Hand: Node = null;
+
+    @property(Node)
     ParticleNode: Node = null;
+
+    @property(Node)
+    CTA: Node = null;
 
     @property(SpriteAtlas)
     ColorImgs: SpriteAtlas = null;
@@ -25,6 +34,7 @@ export class GameManager extends Component {
     private offset: Vec3 = new Vec3();
 
     audiosource: AudioSource;
+    count = 0
 
     onLoad() {
         this.audiosource = this.node.getComponent(AudioSource);
@@ -33,18 +43,73 @@ export class GameManager extends Component {
         // Store original positions
         for (let i = 0; i < 16; i++) {
             let node = allNodes[i]
-            this.originalPositions.set(node, node.position.clone());
+            let pos = node.position.clone()
+            this.originalPositions.set(node,pos );
 
             // Attach touch handlers
             node.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
             node.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
             node.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
             node.on(Input.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+
+             
         }
+            this.scheduleOnce(() => {
+
+                this.handTween(this.totalNodes[9].position, this.totalNodes[14].position);
+            }, 0.8)
+
     }
+
+     handTween(initPnt, finlaPnt) {
+
+        this.Hand.active = true;
+        // this.DragText.active = true;
+
+        // let nodeToAnimate = this.DragText;
+        // const zoomIn = tween(nodeToAnimate)
+        //     .to(0.8, { scale: v3(1.1, 1.1, 1.1) });
+        // const zoomOut = tween(nodeToAnimate)
+        //     .to(0.8, { scale: v3(0.9, 0.9, 0.9) });
+        // tween(nodeToAnimate)
+        //     .sequence(zoomIn, zoomOut)
+        //     .union()
+        //     .repeatForever()
+        //     .start();
+        this.Hand.setPosition(initPnt);
+
+        tween(this.Hand)
+            .repeatForever(
+                tween()
+                    .call(() => {
+                        this.Hand.children[0].active = true;
+                        this.Hand.children[1].active = false;
+                    })
+                    .to(1, { position: finlaPnt }, { easing: 'sineInOut' })
+                    .call(() => {
+                        this.Hand.children[0].active = false;
+                        this.Hand.children[1].active = true;
+                    })
+                    .delay(0.6)
+                    .call(() => {
+                        this.Hand.children[0].active = true;
+                        this.Hand.children[1].active = false;
+                    })
+                    .to(1, { position: initPnt }, { easing: 'sineInOut' })
+
+                    .call(() => {
+                        this.Hand.children[0].active = false;
+                        this.Hand.children[1].active = true;
+                    }).delay(0.6)
+
+            )
+            .start();
+    }
+
 
     onTouchStart(event: EventTouch) {
         this.draggingNode = event.target as Node;
+        this.Hand.active = false;
 
         const touchPos = event.getUILocation();
         const worldZero = this.draggingNode.getComponent(UITransform).convertToWorldSpaceAR(Vec3.ZERO);
@@ -86,28 +151,36 @@ export class GameManager extends Component {
                         })
                         .start();
 
-                   
+
 
                     target.getComponent(Sprite).spriteFrame = this.ColorImgs.getSpriteFrame(target.name);
                     this.SnappedNodes.push(target.name)
                     this.draggingNode.active = false;
-                //    const index = this.draggableNodes.findIndex(n => n === this.draggingNode);
-                //     if (index !== -1) {
-                //          this.draggableNodes.splice(index, 1);
-                //     }
+                    //    const index = this.draggableNodes.findIndex(n => n === this.draggingNode);
+                    //     if (index !== -1) {
+                    //          this.draggableNodes.splice(index, 1);
+                    //     }
                     this.audiosource.playOneShot(this.audioclips[0], 0.6);
                     snapped = true;
 
                 } else if (target.children?.length && this.SnappedNodes.indexOf(target.name) !== -1) {
                     target.children[0].active = true;
                     this.draggingNode.active = false;
+                    this.count += 1
                     // this.draggableNodes = this.draggableNodes.filter(node => node !== this.draggingNode);
                     this.audiosource.playOneShot(this.audioclips[2], 0.6);
-                    this.scheduleOnce(()=>{
-                        let ranId = math.randomRangeInt(3,5);
+                    this.scheduleOnce(() => {
+                        let ranId = math.randomRangeInt(3, 5);
                         this.audiosource.playOneShot(this.audioclips[ranId], 0.6);
-                    },0.3)
+                    }, 0.3)
                     snapped = true;
+
+                    if (this.count >= 5) {
+                        this.scheduleOnce(() => {
+                            this.CTA.active = true;
+                        }, 1.3)
+
+                    }
                 }
 
                 break;
