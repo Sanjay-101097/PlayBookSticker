@@ -36,7 +36,7 @@
             "_value": false
           },
           "rich-text": {
-            "_value": true
+            "_value": false
           },
           "mask": {
             "_value": true
@@ -202,7 +202,6 @@
           "mask",
           "particle-2d",
           "physics-2d-box2d",
-          "rich-text",
           "tiled-map",
           "tween",
           "ui",
