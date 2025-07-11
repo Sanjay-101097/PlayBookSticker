@@ -177,11 +177,19 @@ export class GameManager extends Component {
                     this.ParticleNode.setPosition(target.position)
                     this.ParticleNode.getComponent(ParticleSystem2D).enabled = true;
                     this.ParticleNode.getComponent(ParticleSystem2D).resetSystem()
+                    let scale1 = v3(0.7, 0.7, 0.7)
+                    let scale2 = v3(0.58, 0.58, 0.58)
+                    if (target.name == "Cat With Tube") {
+                        scale1 = v3(1, 1, 1)
+                        scale2 = v3(0.8, 0.8, 0.8)
+                    }
+
                     tween(target)
-                        .to(0.2, { scale: new Vec3(0.7, 0.7, 0.7) }, { easing: "quadIn" })
-                        .to(0.2, { scale: new Vec3(0.58, 0.58, 0.58) }, { easing: "quadIn" }).delay(0.4)
+                        .to(0.2, { scale: scale1 }, { easing: "quadIn" })
+                        .to(0.2, { scale: scale2 }, { easing: "quadIn" }).delay(0.4)
                         .call(() => {
                             this.ParticleNode.getComponent(ParticleSystem2D).enabled = false;
+
                         })
                         .start();
 
@@ -195,13 +203,14 @@ export class GameManager extends Component {
                     } else if (target.name == "Cat with fries") {
                         target.getComponent(Sprite).spriteFrame = this.Cats[2]
                     }
+
                     this.SnappedNodes.push(target.name)
                     this.draggingNode.active = false;
                     let num = this.totalNodes.indexOf(this.draggingNode)
                     if (this.idx < 3) {
-                        this.originalPositions.set(this.totalNodes[5 + this.idx],this.originalPositions.get(this.draggingNode));
+                        this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
                         this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                        
+
                     }
 
                     this.arrdata.splice(num, 1);
@@ -232,9 +241,9 @@ export class GameManager extends Component {
                     // this.draggableNodes = this.draggableNodes.filter(node => node !== this.draggingNode);
                     this.audiosource.playOneShot(this.audioclips[2], 0.6);
                     if (this.idx < 3) {
-                        this.originalPositions.set(this.totalNodes[13 + this.idx],this.originalPositions.get(this.draggingNode));
+                        this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
                         this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                         
+
                         this.idx += 1
                     }
 
