@@ -91,7 +91,7 @@ export class GameManager extends Component {
             .start();
         this.Hand.setPosition(initPnt);
         this.Hand.active = true;
-        this.Hand.setSiblingIndex(26)
+        this.Hand.setSiblingIndex(27)
 
         Tween.stopAllByTarget(this.Hand)
 
@@ -208,8 +208,17 @@ export class GameManager extends Component {
                     this.draggingNode.active = false;
                     let num = this.totalNodes.indexOf(this.draggingNode)
                     if (this.idx < 3) {
-                        this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
-                        this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
+                        if (!this.totalNodes[5 + this.idx].active) {
+                            this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
+                            this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
+                            this.totalNodes[5 + this.idx].active = true;
+                        } else {
+                            this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
+                            this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
+                            this.totalNodes[13 + this.idx].active = true;
+                            this.idx += 1
+                        }
+
 
                     }
 
@@ -241,10 +250,16 @@ export class GameManager extends Component {
                     // this.draggableNodes = this.draggableNodes.filter(node => node !== this.draggingNode);
                     this.audiosource.playOneShot(this.audioclips[2], 0.6);
                     if (this.idx < 3) {
-                        this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
-                        this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-
-                        this.idx += 1
+                        if (!this.totalNodes[5 + this.idx].active) {
+                            this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
+                            this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
+                            this.totalNodes[5 + this.idx].active = true;
+                        } else {
+                            this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
+                            this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
+                            this.totalNodes[13 + this.idx].active = true;
+                            this.idx += 1
+                        }
                     }
 
                     this.scheduleOnce(() => {
