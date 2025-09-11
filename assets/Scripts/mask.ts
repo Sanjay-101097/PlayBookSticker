@@ -4,7 +4,7 @@ const { ccclass, property } = _decorator;
 @ccclass('mask')
 export class mask extends Component {
     start() {
-        tween(this.node).to(0.6,{scale:v3(1,1,1)},{easing:"smooth"}).start()
+        tween(this.node).to(1.2,{scale:v3(1,1,1)},{easing:"smooth"}).start()
     }
 
     update(deltaTime: number) {
