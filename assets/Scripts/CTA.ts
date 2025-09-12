@@ -36,11 +36,11 @@ export class CTA extends Component {
         // this.node.getComponent(AudioSource).enabled = false;
 
         if (sys.os === sys.OS.ANDROID) {
-            window.open("https://play.google.com/store/apps/details?id=com.game.goolny.stickers&hl=en-US&gl=US", "MergeSticker");
+            window.open("https://play.google.com/store/apps/details?id=com.game5mobile.sticker&hl=en_IN", "MergeSticker");
         } else if (sys.os === sys.OS.IOS) {
-            window.open("https://apps.apple.com/us/app/merge-sticker-playbook-2d/id6505066374", "MergeSticker");
+            window.open("https://apps.apple.com/us/app/sticker-book-color-by-number/id6450409974", "MergeSticker");
         } else {
-            window.open("https://play.google.com/store/apps/details?id=com.game.goolny.stickers&hl=en-US&gl=US", "MergeSticker");
+            window.open("https://play.google.com/store/apps/details?id=com.game5mobile.sticker&hl=en_IN", "MergeSticker");
         }
         this.super_html_playable.download();
 

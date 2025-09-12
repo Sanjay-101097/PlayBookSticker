@@ -13,7 +13,7 @@ export class StickerAnimation extends Component {
     private currentIndex: number = 0;
     private playing: boolean = false;
 
-    onLoad() {
+    onEnable() {
         this.sprite = this.getComponent(Sprite)!;
         this.playAnimation();
     }

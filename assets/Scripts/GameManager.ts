@@ -1,4 +1,5 @@
-import { _decorator, AudioClip, AudioSource, Component, EventTouch, Input, math, Node, ParticleSystem2D, Sprite, SpriteAtlas, SpriteFrame, tween, UITransform, Vec3, v3, Tween } from 'cc';
+import { _decorator, AudioClip, AudioSource, Component, EventTouch, Input, math, Node, ParticleSystem2D, Sprite, SpriteAtlas, SpriteFrame, tween, UITransform, Vec3, v3, Tween, Animation } from 'cc';
+import { StickerAnimation } from './StickerAnimation';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -25,7 +26,8 @@ export class GameManager extends Component {
 
     @property(Node)
     Hand: Node = null;
-
+    @property(Node)
+    star: Node = null;
     @property(Node)
     DragText: Node = null;
 
@@ -59,7 +61,7 @@ export class GameManager extends Component {
         const allNodes = this.totalNodes;
         this.scheduleOnce(() => {
 
-            this.handTween(v3(this.totalNodes[0].position), this.totalNodes[8].position);
+            this.handTween(v3(this.totalNodes[0].position), this.totalNodes[12].position);
         }, 0.8)
 
         // Store original positions
@@ -98,7 +100,7 @@ export class GameManager extends Component {
             .start();
         this.Hand.setPosition(initPnt);
         this.Hand.active = true;
-        this.Hand.setSiblingIndex(27)
+        this.Hand.setSiblingIndex(this.dragArea.children.length - 1)
 
         Tween.stopAllByTarget(this.Hand)
 
@@ -109,7 +111,7 @@ export class GameManager extends Component {
                         this.Hand.children[0].active = true;
                         this.Hand.children[1].active = false;
                     })
-                    .to(1, { position: finlaPnt }, { easing: 'sineInOut' })
+                    .to(1.5, { position: finlaPnt }, { easing: 'sineInOut' })
                     .call(() => {
                         this.Hand.children[0].active = false;
                         this.Hand.children[1].active = true;
@@ -137,14 +139,15 @@ export class GameManager extends Component {
 
 
     onTouchStart(event: EventTouch) {
-        // this.DragText.active = false;
+        this.star.active = false;
+        this.DragText.active = false;
         this.isidle = false;
         if (this.firsttime) {
-            // this.BGAudio.play()
+            this.BGAudio.play()
             this.firsttime = false;
         }
         this.draggingNode = event.target as Node;
-        // this.Hand.active = false;
+        this.Hand.active = false;
 
         const touchPos = event.getUILocation();
         const worldZero = this.draggingNode.getComponent(UITransform).convertToWorldSpaceAR(Vec3.ZERO);
@@ -195,7 +198,7 @@ export class GameManager extends Component {
                 this.draggingNode.off(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
                 this.draggingNode.off(Input.EventType.TOUCH_END, this.onTouchEnd, this);
                 this.shadowNode.active = false;
-                target.active = true;
+                target.getComponent(StickerAnimation).enabled = true
                 let nextnode = this.totalNodes[this.idx]
                 this.coloringNode.active = true;
                 if (this.idx <= 11) {
@@ -208,6 +211,11 @@ export class GameManager extends Component {
                         // .delay(0.4)
                         .call(() => {
                             this.ParticleNode.getComponent(ParticleSystem2D).enabled = false;
+                            this.star.active = true;
+                            this.star.setPosition(target.position)
+                            this.star.setSiblingIndex(this.dragArea.children.length - 1)
+                            this.star.getComponent(Animation).play()
+                            this.ParticleNode.setSiblingIndex(this.dragArea.children.length - 1)
                             this.ParticleNode.setPosition(target.position)
                             this.ParticleNode.getComponent(ParticleSystem2D).enabled = true;
                             this.ParticleNode.getComponent(ParticleSystem2D).resetSystem()
@@ -215,122 +223,19 @@ export class GameManager extends Component {
                         .start();
                 }
 
-
-                // let scale1 = v3(0.7, 0.7, 0.7)
-                // let scale2 = v3(0.58, 0.58, 0.58)
-                // // if (target.name == "Cat With Tube") {
-                // //     scale1 = v3(1, 1, 1)
-                // //     scale2 = v3(0.8, 0.8, 0.8)
-                // // }
-
-
+                this.ctaEnabled = true;
+                this.audiosource.playOneShot(this.audioclips[2],0.6)
                 this.idx += 1
-
-
-                // target.getComponent(Sprite).spriteFrame = this.ColorImgs.getSpriteFrame(target.name);
-                // if (target.name == "Cat with berry") {
-                //     target.getComponent(Sprite).spriteFrame = this.Cats[0]
-                // } else if (target.name == "Cat with Bread") {
-                //     target.getComponent(Sprite).spriteFrame = this.Cats[1]
-                // } else if (target.name == "Cat with fries") {
-                //     target.getComponent(Sprite).spriteFrame = this.Cats[2]
-                // }
-
-                // this.SnappedNodes.push(target.name)
-                // this.draggingNode.active = false;
-                // let num = this.totalNodes.indexOf(this.draggingNode)
-                // if (this.idx < 3) {
-                //     if (!this.totalNodes[5 + this.idx].active) {
-                //         this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
-                //         this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                //         this.totalNodes[5 + this.idx].active = true;
-                //     } else {
-                //         this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
-                //         this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                //         this.totalNodes[13 + this.idx].active = true;
-                //         this.idx += 1
-                //     }
-
-
-                // }
-
-                // this.arrdata.splice(num, 1);
-                // if (num < 8) {
-                //     this.nextanimNode = num + 8;
-                //     this.nextanimNode2 = num + 16;
-                // } else {
-                //     this.nextanimNode = num;
-                //     this.nextanimNode2 = num + 8;
-                // }
-
-                //    const index = this.draggableNodes.findIndex(n => n === this.draggingNode);
-                //     if (index !== -1) {
-                //          this.draggableNodes.splice(index, 1);
-                //     }
-                // this.audiosource.playOneShot(this.audioclips[0], 0.6);
-                snapped = true;
-                // if (this.istutorial) {
-                //     this.dt1 = 5
-                //     this.istutorial = false;
-                // }
-
-
-
-                //else if (target.children?.length && this.SnappedNodes.indexOf(target.name) !== -1) {
-                //     target.children[0].active = true;
-                //     this.draggingNode.active = false;
-                //     this.count += 1
-                //     // this.draggableNodes = this.draggableNodes.filter(node => node !== this.draggingNode);
-                //     this.audiosource.playOneShot(this.audioclips[2], 0.6);
-                //     if (this.idx < 3) {
-                //         if (!this.totalNodes[5 + this.idx].active) {
-                //             this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
-                //             this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                //             this.totalNodes[5 + this.idx].active = true;
-                //         } else {
-                //             this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
-                //             this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                //             this.totalNodes[13 + this.idx].active = true;
-                //             this.idx += 1
-                //         }
-                //     }
-
-                //     this.scheduleOnce(() => {
-                //         let ranId = math.randomRangeInt(3, 5);
-                //         this.audiosource.playOneShot(this.audioclips[ranId], 0.6);
-                //     }, 0.3)
-                //     snapped = true;
-
-                //     if (this.count >= 4) {
-                //         this.scheduleOnce(() => {
-                //             this.CTA.active = true;
-                //             // this.audiosource.playOneShot(this.audioclips[5], 0.6);
-                //         }, 1.3)
-
-                //     } else if (this.count >= 1) {
-                //         this.ctaEnabled = true
-                //     }
-                //     let num = this.totalNodes.indexOf(this.draggingNode)
-                //     this.arrdata.splice(num, 1);
-                //     if (num < 8) {
-                //         if (num >= 7 && this.arrdata.length > 1) {
-                //             this.nextanimNode = this.arrdata[0];
-                //             this.nextanimNode2 = this.nextanimNode + 8;
-                //         } else {
-                //             this.nextanimNode = num + 1;
-                //             this.nextanimNode2 = this.nextanimNode + 8;
-                //         }
-                //     } else {
-                //         if (num >= this.arrdata[this.arrdata.length - 1] && this.arrdata.length > 1) {
-                //             this.nextanimNode = this.arrdata[0];
-                //             this.nextanimNode2 = this.nextanimNode + 8;
-                //         } else {
-                //             this.nextanimNode = num - 7;
-                //             this.nextanimNode2 = this.nextanimNode + 8;
-                //         }
-
-                //     }
-                // }
+                for (let i = 0; i < 12; i++) {
+                    if (this.totalNodes[i].active) {
+                        this.nextanimNode = i;
+                        this.nextanimNode2 = i + 12;
+                        break;
+                    }
+                }
+                if(this.idx >=10){
+                    this.CTA.active = true;
+                }
 
                 break;
             }
@@ -363,7 +268,7 @@ export class GameManager extends Component {
     update(deltaTime: number) {
         if (this.ctaEnabled) {
             this.dt += deltaTime;
-            if (this.dt >= 30) {
+            if (this.dt >= 50) {
                 this.CTA.active = true;
                 this.ctaEnabled = false;
             }
@@ -373,7 +278,7 @@ export class GameManager extends Component {
             if (this.dt1 >= 4) {
                 this.isidle = false;
                 this.dt1 = 0;
-                // this.findhandpos()
+                this.findhandpos()
 
             }
         }
