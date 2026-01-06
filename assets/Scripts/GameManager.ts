@@ -154,6 +154,8 @@ export class GameManager extends Component {
 
         this.offset.set(touchPos.x - worldZero.x, touchPos.y - worldZero.y, 0);
         this.draggingNode.setSiblingIndex(this.draggingNode.parent.children.length - 1)
+        tween(this.draggingNode).to(0.1, { scale: v3(0.65, 0.65, 0.5) }).start()
+        this.draggingNode.children[0].active = false
         this.ShadowNodes.forEach((node, idx) => {
             if (node.name == this.draggingNode.name) {
                 this.shadowNode = node;
@@ -186,8 +188,11 @@ export class GameManager extends Component {
         if (!this.draggingNode) return;
 
         let snapped = false;
-        this.isidle = true;
-        this.dt1 = 0;
+        if (this.idx < 12) {
+            this.isidle = true;
+            this.dt1 = 0;
+        }
+
 
         for (let target of this.totalNodes) {
             const dist = Vec3.distance(this.draggingNode.position, target.position);
@@ -200,8 +205,11 @@ export class GameManager extends Component {
                 this.shadowNode.active = false;
                 target.getComponent(StickerAnimation).enabled = true
                 let nextnode = this.totalNodes[this.idx]
+                if(this.idx ==12){
+                    nextnode = this.totalNodes[24]
+                }
                 this.coloringNode.active = true;
-                if (this.idx <= 11) {
+                if (this.idx <= 12) {
                     nextnode.active = true
                     nextnode.setPosition(this.originalPositions.get(this.draggingNode))
                     this.originalPositions.set(nextnode, this.originalPositions.get(this.draggingNode));
@@ -219,12 +227,15 @@ export class GameManager extends Component {
                             this.ParticleNode.setPosition(target.position)
                             this.ParticleNode.getComponent(ParticleSystem2D).enabled = true;
                             this.ParticleNode.getComponent(ParticleSystem2D).resetSystem()
+
                         })
                         .start();
                 }
-
+                if (this.idx >= 12) {
+                    this.CTA.active = true;
+                }
                 this.ctaEnabled = true;
-                this.audiosource.playOneShot(this.audioclips[2],0.6)
+                this.audiosource.playOneShot(this.audioclips[2], 0.6)
                 this.idx += 1
                 for (let i = 0; i < 12; i++) {
                     if (this.totalNodes[i].active) {
@@ -233,9 +244,7 @@ export class GameManager extends Component {
                         break;
                     }
                 }
-                if(this.idx >=10){
-                    this.CTA.active = true;
-                }
+
 
                 break;
             }
@@ -248,6 +257,8 @@ export class GameManager extends Component {
             const original = this.originalPositions.get(this.draggingNode);
             if (original) {
                 this.draggingNode.setPosition(original);
+                this.draggingNode.setScale(0.6, 0.6, 0.6)
+                this.draggingNode.children[0].active = true
                 this.audiosource.playOneShot(this.audioclips[1], 0.6);
             }
         }
@@ -268,7 +279,7 @@ export class GameManager extends Component {
     update(deltaTime: number) {
         if (this.ctaEnabled) {
             this.dt += deltaTime;
-            if (this.dt >= 50) {
+            if (this.dt >= 60) {
                 this.CTA.active = true;
                 this.ctaEnabled = false;
             }

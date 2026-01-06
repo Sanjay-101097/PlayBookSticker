@@ -15,6 +15,7 @@ export class StickerAnimation extends Component {
 
     onEnable() {
         this.sprite = this.getComponent(Sprite)!;
+        if(this.node.children[0])this.node.children[0].active = false;
         this.playAnimation();
     }
 

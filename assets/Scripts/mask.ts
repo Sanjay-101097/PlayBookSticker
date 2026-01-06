@@ -9,13 +9,13 @@ export class mask extends Component {
         if (!uiTransform) return;
 
         const startSize = uiTransform.contentSize.clone();
-        const endSize = new Size(300, 300); // target size
+        const endSize = new Size(500, 500); // target size
 
         // temp object to tween width & height
         const sizeObj = { w: startSize.width, h: startSize.height };
 
         tween(sizeObj)
-            .to(1.2, { w: endSize.width, h: endSize.height }, {
+            .to(1, { w: endSize.width, h: endSize.height }, {
                 easing:"quadInOut",
                 onUpdate: (obj) => {
                     uiTransform.setContentSize(new Size(obj.w, obj.h));

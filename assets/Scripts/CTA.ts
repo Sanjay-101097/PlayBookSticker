@@ -28,22 +28,24 @@ export class CTA extends Component {
     public Downnload(): void {
         this.super.download();
     }
-
+    
 
     OnStartButtonClick() {
 
-        // this.BG.enabled = false;
-        // this.node.getComponent(AudioSource).enabled = false;
-
+        let storeUrl = "";
         if (sys.os === sys.OS.ANDROID) {
-            window.open("https://play.google.com/store/apps/details?id=com.game5mobile.sticker&hl=en_IN", "MergeSticker");
+            storeUrl =
+                "https://play.google.com/store/apps/details?id=com.game5mobile.sticker&hl=en_IN";
         } else if (sys.os === sys.OS.IOS) {
-            window.open("https://apps.apple.com/us/app/sticker-book-color-by-number/id6450409974", "MergeSticker");
+            storeUrl =
+                "https://apps.apple.com/us/app/sticker-book-color-by-number/id6450409974";
         } else {
-            window.open("https://play.google.com/store/apps/details?id=com.game5mobile.sticker&hl=en_IN", "MergeSticker");
+            storeUrl =
+                "https://play.google.com/store/apps/details?id=com.game5mobile.sticker&hl=en_IN";
         }
+        this.super_html_playable.set_google_play_url(storeUrl)
         this.super_html_playable.download();
-
+        
     }
 
     update(deltaTime: number) {
