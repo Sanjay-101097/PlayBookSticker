@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, sys, tween, v3, Vec3 } from 'cc';
+import { _decorator, AudioSource, Component, Node, sys, tween, v3, Vec3 } from 'cc';
 import { super_html_playable } from './super_html_playable';
 const { ccclass, property } = _decorator;
 
@@ -6,6 +6,9 @@ const { ccclass, property } = _decorator;
 export class CTA extends Component {
 
     super_html_playable: super_html_playable = new super_html_playable();
+
+        @property(AudioSource)
+        BG: AudioSource = null;
 
     start() {
 
@@ -32,7 +35,7 @@ export class CTA extends Component {
 
     OnStartButtonClick() {
 
-        // this.BG.enabled = false;
+        this.BG.enabled = false;
         // this.node.getComponent(AudioSource).enabled = false;
 
         if (sys.os === sys.OS.ANDROID) {

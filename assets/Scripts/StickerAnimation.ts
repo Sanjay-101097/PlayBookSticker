@@ -35,6 +35,10 @@ export class StickerAnimation extends Component {
                     this.currentIndex = 0;
                 } else {
                     this.playing = false;
+                    let animnode = this.node.parent.getChildByName("Mask").children[0]
+                    tween(animnode).to(0.5,{x:animnode.x+400}).call(()=>{
+                        this.node.parent.getChildByName("Particle2D").active = true;
+                    }).start()
                     return; // Stop animation
                 }
             }

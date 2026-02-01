@@ -1,4 +1,4 @@
-import { _decorator, AudioClip, AudioSource, Component, EventTouch, Input, math, Node, ParticleSystem2D, Sprite, SpriteAtlas, SpriteFrame, tween, UITransform, Vec3, v3, Tween } from 'cc';
+import { _decorator, AudioClip, AudioSource, Component, EventTouch, Input, math, Node, ParticleSystem2D, Sprite, SpriteAtlas, SpriteFrame, tween, UITransform, Vec3, v3, Tween, Animation, easing, UIOpacity, director } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -6,13 +6,22 @@ export class GameManager extends Component {
 
 
     @property([Node])
-    totalNodes: Node[] = [];
+    totalNodes: Node = null;
 
     @property([SpriteFrame])
     HandSP: SpriteFrame[] = [];
 
     @property([SpriteFrame])
-    Cats: SpriteFrame[] = [];
+    ImageNew: SpriteFrame[] = [];
+
+    @property([SpriteFrame])
+    ShadowNew: SpriteFrame[] = [];
+
+    @property(Node)
+    shadows: Node = null;
+
+    @property(Node)
+    Sticker: Node[] = [];
 
     @property(Node)
     dragArea: Node = null;
@@ -28,6 +37,12 @@ export class GameManager extends Component {
 
     @property(Node)
     CTA: Node = null;
+
+    @property(Node)
+    filpanimations: Node[] = [];
+
+    @property(Node)
+    Pages: Node[] = [];
 
     @property(AudioSource)
     BGAudio: AudioSource = null;
@@ -49,15 +64,44 @@ export class GameManager extends Component {
 
     onLoad() {
         this.audiosource = this.node.getComponent(AudioSource);
-        const allNodes = this.totalNodes;
+        // const allNodes = this.totalNodes;
         this.scheduleOnce(() => {
+            const anim = this.filpanimations[0].getComponent(Animation);
 
-            this.handTween(v3(this.totalNodes[0].position), this.totalNodes[8].position);
+            anim.play();
+
+            anim.once(Animation.EventType.FINISHED, () => {
+                this.filpanimations[0].active = false
+                this.filpanimations[1].active = true
+                const anim2 = this.filpanimations[1].getComponent(Animation);
+                anim2.play("fast")
+                this.audiosource.playOneShot(this.audioclips[0], 0.1);
+                anim2.once(Animation.EventType.FINISHED, () => {
+                    anim2.play("fast")
+                    this.scheduleOnce(() => {
+                        this.Pages[0].active = true;
+                        this.Sticker[0].active = true
+                    }, 0.02)
+                    this.audiosource.playOneShot(this.audioclips[0], 0.1);
+                    // anim2.once(Animation.EventType.FINISHED, () => {
+                    //     anim2.play("fast")
+                    anim2.once(Animation.EventType.FINISHED, () => {
+
+                        let pos = this.Pages[0].position;
+                        tween(this.Pages[0]).delay(0.1).to(0.3, { scale: v3(1.2, 1.2, 1.2), position: v3(0, pos.y - 250) }, { easing: "quadIn" }).start()
+                        // })
+                    })
+                })
+            });
+
+            // this.handTween(v3(this.totalNodes[0].position), this.totalNodes[8].position);
+
         }, 0.8)
 
-        // Store original positions
-        for (let i = 0; i < 16; i++) {
-            let node = allNodes[i]
+        // // Store original positions
+        let dragnode = this.Pages[0].getChildByName("dragnodes")
+        for (let i = 0; i < dragnode.children.length; i++) {
+            let node = dragnode.children[i]
             let pos = node.position.clone()
             this.originalPositions.set(node, pos);
 
@@ -71,6 +115,55 @@ export class GameManager extends Component {
 
         }
 
+        this.scheduleOnce(()=>{
+            this.findhandpos()
+        },2)
+
+
+    }
+
+    animloop() {
+
+        this.level =2
+        this.Pages[1].addChild(this.Hand)
+        this.Pages[0].active = false;
+        this.dragArea = this.Pages[1]
+        this.Sticker[0].active = false
+        this.shadows = this.Pages[1].getChildByName("Shadow")
+        this.totalNodes = this.Pages[1].getChildByName("dragnodes")
+        const anim2 = this.filpanimations[1].getComponent(Animation);
+        anim2.play("fast")
+        this.audiosource.playOneShot(this.audioclips[0], 0.1);
+        this.scheduleOnce(() => {
+
+            this.Pages[1].active = true;
+            this.Sticker[1].active = true
+        }, 0.2)
+
+        anim2.once(Animation.EventType.FINISHED, () => {
+            // anim2.play("fast")
+            // anim2.once(Animation.EventType.FINISHED, () => {
+
+            let pos = this.Pages[1].position;
+            tween(this.Pages[1]).delay(0.1).to(0.3, { scale: v3(1.2, 1.2, 1.2), position: v3(0, pos.y - 250) }, { easing: "quadIn" }).start()
+            // })
+        });
+
+        let dragnode = this.Pages[1].getChildByName("dragnodes")
+        for (let i = 0; i < dragnode.children.length; i++) {
+            let node = dragnode.children[i]
+            let pos = node.position.clone()
+            this.originalPositions.set(node, pos);
+
+            this.arrdata.push(i);
+            // Attach touch handlers
+            node.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
+            node.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
+            node.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
+            node.on(Input.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+
+
+        }
 
     }
 
@@ -143,7 +236,9 @@ export class GameManager extends Component {
         const worldZero = this.draggingNode.getComponent(UITransform).convertToWorldSpaceAR(Vec3.ZERO);
 
         this.offset.set(touchPos.x - worldZero.x, touchPos.y - worldZero.y, 0);
+        // this.shadows.children[this.draggingNode.getSiblingIndex()].setSiblingIndex(this.shadows.children.length - 1)
         this.draggingNode.setSiblingIndex(this.draggingNode.parent.children.length - 1)
+
     }
 
     onTouchMove(event: EventTouch) {
@@ -161,6 +256,9 @@ export class GameManager extends Component {
     nextanimNode;
     nextanimNode2;
     idx = 0;
+    level = 1
+
+    Crtcount = 0
 
     onTouchEnd(event: EventTouch) {
         if (!this.draggingNode) return;
@@ -168,137 +266,80 @@ export class GameManager extends Component {
         let snapped = false;
         this.isidle = true;
         this.dt1 = 0;
-
-        for (let target of this.totalNodes) {
+        this.audiosource.playOneShot(this.audioclips[1], 0.6);
+        for (let target of this.totalNodes.children) {
             const dist = Vec3.distance(this.draggingNode.position, target.position);
             if (dist < 50 && this.draggingNode != target && this.draggingNode.name === target.name) {
                 this.draggingNode.setPosition(target.position);
-                if (!target.children?.length && this.SnappedNodes.indexOf(target.name) == -1) {
-                    this.ParticleNode.setPosition(target.position)
-                    this.ParticleNode.getComponent(ParticleSystem2D).enabled = true;
-                    this.ParticleNode.getComponent(ParticleSystem2D).resetSystem()
-                    let scale1 = v3(0.7, 0.7, 0.7)
-                    let scale2 = v3(0.58, 0.58, 0.58)
-                    if (target.name == "Cat With Tube") {
-                        scale1 = v3(1, 1, 1)
-                        scale2 = v3(0.8, 0.8, 0.8)
-                    }
-
-                    tween(target)
-                        .to(0.2, { scale: scale1 }, { easing: "quadIn" })
-                        .to(0.2, { scale: scale2 }, { easing: "quadIn" }).delay(0.4)
-                        .call(() => {
-                            this.ParticleNode.getComponent(ParticleSystem2D).enabled = false;
-
-                        })
-                        .start();
-
-
-
-                    target.getComponent(Sprite).spriteFrame = this.ColorImgs.getSpriteFrame(target.name);
-                    if (target.name == "Cat with berry") {
-                        target.getComponent(Sprite).spriteFrame = this.Cats[0]
-                    } else if (target.name == "Cat with Bread") {
-                        target.getComponent(Sprite).spriteFrame = this.Cats[1]
-                    } else if (target.name == "Cat with fries") {
-                        target.getComponent(Sprite).spriteFrame = this.Cats[2]
-                    }
-
-                    this.SnappedNodes.push(target.name)
-                    this.draggingNode.active = false;
-                    let num = this.totalNodes.indexOf(this.draggingNode)
-                    if (this.idx < 3) {
-                        if (!this.totalNodes[5 + this.idx].active) {
-                            this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
-                            this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                            this.totalNodes[5 + this.idx].active = true;
-                        } else {
-                            this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
-                            this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                            this.totalNodes[13 + this.idx].active = true;
-                            this.idx += 1
-                        }
-
-
-                    }
-
-                    this.arrdata.splice(num, 1);
-                    if (num < 8) {
-                        this.nextanimNode = num + 8;
-                        this.nextanimNode2 = num + 16;
-                    } else {
-                        this.nextanimNode = num;
-                        this.nextanimNode2 = num + 8;
-                    }
-
-                    //    const index = this.draggableNodes.findIndex(n => n === this.draggingNode);
-                    //     if (index !== -1) {
-                    //          this.draggableNodes.splice(index, 1);
-                    //     }
-                    this.audiosource.playOneShot(this.audioclips[0], 0.6);
-                    snapped = true;
-                    if (this.istutorial) {
-                        this.dt1 = 5
-                        this.istutorial = false;
-                    }
-
-
-                } else if (target.children?.length && this.SnappedNodes.indexOf(target.name) !== -1) {
-                    target.children[0].active = true;
-                    this.draggingNode.active = false;
-                    this.count += 1
-                    // this.draggableNodes = this.draggableNodes.filter(node => node !== this.draggingNode);
-                    this.audiosource.playOneShot(this.audioclips[2], 0.6);
-                    if (this.idx < 3) {
-                        if (!this.totalNodes[5 + this.idx].active) {
-                            this.originalPositions.set(this.totalNodes[5 + this.idx], this.originalPositions.get(this.draggingNode));
-                            this.totalNodes[5 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                            this.totalNodes[5 + this.idx].active = true;
-                        } else {
-                            this.originalPositions.set(this.totalNodes[13 + this.idx], this.originalPositions.get(this.draggingNode));
-                            this.totalNodes[13 + this.idx].setPosition(this.originalPositions.get(this.draggingNode))
-                            this.totalNodes[13 + this.idx].active = true;
-                            this.idx += 1
-                        }
-                    }
-
-                    this.scheduleOnce(() => {
-                        let ranId = math.randomRangeInt(3, 5);
-                        this.audiosource.playOneShot(this.audioclips[ranId], 0.6);
-                    }, 0.3)
-                    snapped = true;
-
-                    if (this.count >= 4) {
-                        this.scheduleOnce(() => {
-                            this.CTA.active = true;
-                            // this.audiosource.playOneShot(this.audioclips[5], 0.6);
-                        }, 1.3)
-
-                    } else if (this.count >= 1) {
-                        this.ctaEnabled = true
-                    }
-                    let num = this.totalNodes.indexOf(this.draggingNode)
-                    this.arrdata.splice(num, 1);
-                    if (num < 8) {
-                        if (num >= 7 && this.arrdata.length > 1) {
-                            this.nextanimNode = this.arrdata[0];
-                            this.nextanimNode2 = this.nextanimNode + 8;
-                        } else {
-                            this.nextanimNode = num + 1;
-                            this.nextanimNode2 = this.nextanimNode + 8;
-                        }
-                    } else {
-                        if (num >= this.arrdata[this.arrdata.length - 1] && this.arrdata.length > 1) {
-                            this.nextanimNode = this.arrdata[0];
-                            this.nextanimNode2 = this.nextanimNode + 8;
-                        } else {
-                            this.nextanimNode = num - 7;
-                            this.nextanimNode2 = this.nextanimNode + 8;
-                        }
-
-                    }
+                this.draggingNode.active = false
+                target.setScale(0, 0, 0)
+                let islast = false
+                target.getComponent(Sprite).spriteFrame = this.totalNodes.getChildByName((Number(target.name) + 1).toString()).getComponent(Sprite).spriteFrame
+                if (target.name === "2" && this.level === 1) {
+                    target.getComponent(UITransform).width += 120
+                    islast = true;
+                    target.getComponent(Sprite).spriteFrame = this.ImageNew[0]
+                } else if (target.name === "3" && this.level === 2) {
+                    target.getComponent(UITransform).width += 120
+                    target.getComponent(UITransform).height += 120
+                    islast = true;
+                    target.getComponent(Sprite).spriteFrame = this.ImageNew[1]
                 }
+                let shadownode = this.shadows.children[target.getSiblingIndex()];
+                // shadownode.getComponent(Sprite).spriteFrame = this.ShadowNew[this.Crtcount]
+                let curidx = Number(target.name)
+                if (target.name != "2" && this.level === 1) {
+                    target.name = (curidx + 1).toString()
+                } else if (target.name != "3" && this.level === 2) {
+                    target.name = (curidx + 1).toString()
+                }
+                
+                let ParticleNode = target.parent.parent.getChildByName("Particle2D");
+                ParticleNode.setPosition(target.position)
+                ParticleNode.active = true;
+                ParticleNode.getComponent(ParticleSystem2D).playOnLoad = true;
+                this.audiosource.playOneShot(this.audioclips[2], 0.6);
+                target.setSiblingIndex(target.parent.children.length - 1)
+                tween(target).to(0.15, { scale: v3(0.6, 0.6, 0.6) }, { easing: "quadIn" }).to(0.1, { scale: v3(0.35, 0.35, 0.35) }, { easing: "quadOut" }).delay(0.2).call(() => {
+                    ParticleNode.active = false;
+                    if (islast) {
+                        let worldpos = target.worldPosition
+                        target.removeFromParent()
+                        target.scene.getChildByName("Canvas").addChild(target)
+                        const localPos = target.scene.getChildByName("Canvas")
+                            .getComponent(UITransform)
+                            .convertToNodeSpaceAR(worldpos);
 
+                        target.setPosition(localPos);
+                        // target.setPosition(worldpos)
+                        tween(target).to(0.2, { scale: v3(0.8, 0.8, 0.8), y: target.position.y + 50 }, { easing: "quadIn" }).delay(0.2).call(() => {
+                            target.active = false
+                            this.Sticker[this.level-1].children[1].active = true
+                            this.audiosource.playOneShot(this.audioclips[0], 0.6);
+                            this.scheduleOnce(()=>{
+                                this.audiosource.playOneShot(this.audioclips[4], 0.6);
+                            },0.2)
+                            tween(this.node).delay(2).call(() => {
+                                
+                                if(this.level===2){
+                                    this.CTA.active =true;
+                                    
+                                }
+                                    
+                                if(this.level===1){
+                                    this.Crtcount =0;
+                                    this.animloop();
+                                }
+                                
+                                
+                            }).start()
+                        }).start()
+                        tween(this.Pages[this.level-1]).delay(0.3).to(0.2, { y: this.Pages[this.level-1].y - 150 }, { easing: "quadIn" }).start()
+                        tween(this.Pages[this.level-1].getComponent(UIOpacity)).delay(0.3).to(0.2, { opacity: 0 }).start()
+                    }
+                }).start()
+                this.Crtcount += 1;
+                snapped = true;
                 break;
             }
 
@@ -309,8 +350,21 @@ export class GameManager extends Component {
         if (!snapped) {
             const original = this.originalPositions.get(this.draggingNode);
             if (original) {
+                let pos = this.draggingNode.position.clone()
                 this.draggingNode.setPosition(original);
-                this.audiosource.playOneShot(this.audioclips[1], 0.6);
+                let wrong = this.totalNodes.getChildByName("wrong")
+                let wrong1 = this.totalNodes.getChildByName("wrong1")
+                wrong.setSiblingIndex(this.totalNodes.children.length-1)
+                wrong1.setSiblingIndex(this.totalNodes.children.length-1)
+                wrong.setPosition(this.draggingNode.position)
+                wrong1.setPosition(pos)
+                tween(wrong).to(0.15,{scale:v3(0.3,0.3,0.3)}).to(0.15,{scale:v3(0.2,0.2,0.2)}).delay(0.3).call(()=>{
+                    wrong.setScale(0,0,0)
+                }).start()
+                tween(wrong1).to(0.15,{scale:v3(0.3,0.3,0.3)}).to(0.15,{scale:v3(0.2,0.2,0.2)}).delay(0.3).call(()=>{
+                    wrong1.setScale(0,0,0)
+                }).start()
+                this.audiosource.playOneShot(this.audioclips[3], 0.6);
             }
         }
 
@@ -324,13 +378,20 @@ export class GameManager extends Component {
     ctaEnabled = false;
     dt1 = 0;
     findhandpos() {
-        this.handTween(this.totalNodes[this.nextanimNode].position, this.totalNodes[this.nextanimNode2].position)
+        let initnode = this.totalNodes.getChildByName(this.Crtcount.toString())
+        let finalnode;
+        this.totalNodes.children.forEach(node => {
+            if(initnode!=node&& initnode.name === node.name){
+                finalnode = node
+            }
+        });
+        this.handTween(initnode.position, finalnode.position)
     }
 
     update(deltaTime: number) {
         if (this.ctaEnabled) {
             this.dt += deltaTime;
-            if (this.dt >= 30) {
+            if (this.dt >= 40) {
                 this.CTA.active = true;
                 this.ctaEnabled = false;
             }
